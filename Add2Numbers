@@ -1,0 +1,56 @@
+class Solution
+{
+public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+    {
+        ListNode *cur1 = l1, *cur2 = l2;
+        ListNode *dummy = new ListNode(-99, nullptr), *res = dummy;
+        int carry = 0;
+        while (cur1 && cur2)
+        {
+            int temp = cur1->val + cur2->val + carry;
+            if (temp > 9)
+            {
+                carry = temp / 10;
+                temp %= 10;
+            }
+            else
+            {
+                carry = 0;
+            }
+            ListNode *_temp = new ListNode(temp, nullptr);
+            res->next = _temp;
+            res = res->next;
+            cur1 = cur1->next;
+            cur2 = cur2->next;
+        }
+        this->after(cur1 ? cur1 : cur2, &res, carry);
+        if (carry)
+        {
+            res->next = new ListNode(carry, nullptr);
+        }
+        ListNode *deleteNode = dummy;
+        dummy = dummy->next;
+        delete deleteNode;
+        return dummy;
+    }
+    void after(ListNode *list, ListNode **ans, int &carry)
+    {
+        while (list)
+        {
+            int temp = list->val + carry;
+            if (temp > 9)
+            {
+                carry = temp / 10;
+                temp %= 10;
+            }
+            else
+            {
+                carry = 0;
+            }
+            (*ans)->next = new ListNode(temp, nullptr);
+            *ans = (*ans)->next;
+            list = list->next;
+        }
+    }
+};
